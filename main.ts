@@ -54,6 +54,16 @@ basic.forever(function on_forever() {
     
     basic.pause(1000)
     RINGS.unshift(game.createSprite(RINGS[0].get(LedSpriteProperty.X) + directionx, RINGS[0].get(LedSpriteProperty.Y) + directiony))
-    RINGS[RINGS.length - 1].delete()
-    RINGS.removeAt(RINGS.length - 1)
+    if (RINGS[0].isTouchingEdge()) {
+        game.gameOver()
+    }
+    
+    if (RINGS[0].isTouching(apple)) {
+        rapple()
+        game.addScore(1)
+    } else {
+        RINGS[RINGS.length - 1].delete()
+        RINGS.removeAt(RINGS.length - 1)
+    }
+    
 })

@@ -29,6 +29,7 @@ def on_gesture_tilt_right():
     directionx = 1
     directiony = 0
 input.on_gesture(Gesture.TILT_RIGHT, on_gesture_tilt_right)
+
 def rapple():
     ok = 0
     while ok == 0:
@@ -46,11 +47,18 @@ game.set_score(0)
 RINGS = [game.create_sprite(1, 2), game.create_sprite(0, 2)]
 apple = game.create_sprite(2, 2)
 rapple()
+
 def on_forever():
     global directionx, directiony
     basic.pause(1000)
     RINGS.unshift(game.create_sprite(RINGS[0].get(LedSpriteProperty.X) + directionx,
             RINGS[0].get(LedSpriteProperty.Y) + directiony))
-    RINGS[len(RINGS) - 1].delete()
-    RINGS.remove_at(len(RINGS) - 1)
+    if RINGS[0].is_touching_edge():
+        game.game_over()
+    if RINGS[0].is_touching(apple):
+        rapple()
+        game.add_score(1)
+    else:
+        RINGS[len(RINGS) - 1].delete()
+        RINGS.remove_at(len(RINGS) - 1)
 basic.forever(on_forever)
